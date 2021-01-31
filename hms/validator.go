@@ -156,11 +156,11 @@ func (c *Client) sendJSONRequest(ctx context.Context, url string, bodyMap map[st
 		return
 	}
 
-	req, err := http.NewRequest("POST", url, bytes.NewReader(bodyString))
+	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewReader(bodyString))
 	if err != nil {
 		return
 	}
-	req = req.WithContext(ctx)
+
 	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
 	atHeader, err := c.GetApplicationAccessTokenHeader()
 	if err == nil {

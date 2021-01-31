@@ -93,11 +93,10 @@ func NewWithClient(secret string, cli *http.Client) *Client {
 func (c *Client) Verify(ctx context.Context, userID string, receiptID string) (IAPResponse, error) {
 	result := IAPResponse{}
 	url := fmt.Sprintf("%v/version/1.0/verifyReceiptId/developer/%v/user/%v/receiptId/%v", c.URL, c.Secret, userID, receiptID)
-	req, err := http.NewRequest("GET", url, nil)
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return result, err
 	}
-	req = req.WithContext(ctx)
 
 	resp, err := c.httpCli.Do(req)
 	if err != nil {

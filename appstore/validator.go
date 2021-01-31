@@ -113,12 +113,11 @@ func (c *Client) Verify(ctx context.Context, reqBody IAPRequest, result interfac
 		return err
 	}
 
-	req, err := http.NewRequest("POST", c.ProductionURL, b)
+	req, err := http.NewRequestWithContext(ctx, "POST", c.ProductionURL, b)
 	if err != nil {
 		return err
 	}
 	req.Header.Set("Content-Type", ContentType)
-	req = req.WithContext(ctx)
 	resp, err := c.httpCli.Do(req)
 	if err != nil {
 		return err
@@ -154,12 +153,11 @@ func (c *Client) parseResponse(resp *http.Response, result interface{}, ctx cont
 			return err
 		}
 
-		req, err := http.NewRequest("POST", c.SandboxURL, b)
+		req, err := http.NewRequestWithContext(ctx, "POST", c.SandboxURL, b)
 		if err != nil {
 			return err
 		}
 		req.Header.Set("Content-Type", ContentType)
-		req = req.WithContext(ctx)
 		resp, err := c.httpCli.Do(req)
 		if err != nil {
 			return err
